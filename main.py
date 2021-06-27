@@ -66,7 +66,7 @@ async def delete_from_favorites(data: FavMuseum):
     result = users_coll.find_one({"UserId": data.user_id})
     if result is None:
         return []
-    users_coll.update({"UserId": data.user_id}, {"$pull": {"Favorites": data.user_id}})
+    users_coll.update({"UserId": data.user_id}, {"$pull": {"Favorites": data.fav_id}})
 
 
 # Retrieve all museums present in the database
@@ -95,7 +95,7 @@ async def get_favorites_list(data: UserId):
     for museum in museums_collection.find().sort("_id", 1):
         for i in fav:
             if museum["_id"] == i:
-                fav_list.append(museum_helper(museum, data.user_id))
+                fav_list.append(museum_short(museum, data.user_id))
     return fav_list
 
 
